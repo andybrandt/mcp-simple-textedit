@@ -41,7 +41,9 @@ class TextEditServer:
                 ),
                 types.Tool(
                     name="edit_file",
-                    description="Edit a text file using pattern-based or line-based operations",
+                    description="Edit text files using context-aware pattern matching. This tool is designed for AI use,\n"
+                                "allowing precise modifications by identifying text blocks through their content and context rather than\n"
+                                "just line numbers. Features content verification to ensure changes affect only intended text.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -62,7 +64,9 @@ class TextEditServer:
                                         # Pattern-based identification
                                         "start_pattern": {
                                             "type": "string",
-                                            "description": "Pattern to identify start line (delete/replace)"
+                                            "description": "Regular expression pattern to identify the start line. For safety,\n"
+                                                          "use unique patterns that won't match unintended locations. Consider including\n"
+                                                          "surrounding context in the pattern."
                                         },
                                         "end_pattern": {
                                             "type": "string",
@@ -93,12 +97,18 @@ class TextEditServer:
                                         "content": {
                                             "type": "array",
                                             "items": {"type": "string"},
-                                            "description": "Lines of text to insert or replace with"
+                                            "description": "New lines of text to insert or use as replacement.\n"
+                                                          "When replacing, ensure the new content maintains proper\n"
+                                                          "indentation and structure of the file.\n"
+                                                          "Each array element represents one line of text."
                                         },
                                         # Verification
                                         "expected_content": {
                                             "type": "string",
-                                            "description": "Expected content for verification"
+                                            "description": "Exact content that should be present for safety verification.\n"
+                                                          "Strongly recommended when using pattern matching to prevent\n"
+                                                          "unintended changes if patterns match wrong locations.\n"
+                                                          "Should include all lines that will be affected by the operation."
                                         }
                                     },
                                     "required": ["type"]
@@ -120,7 +130,13 @@ class TextEditServer:
                          f"Encoding: UTF-8\n"
                          f"Maximum file size: {MAX_FILE_SIZE/1024/1024:.1f}MB\n"
                          f"Maximum operations per request: {MAX_OPERATIONS}\n"
-                         f"Features:\n"
+                    f"Features:\n"
+                    f"- Pattern-based line identification for context-aware editing\n"
+                    f"- Expected content verification to prevent unintended changes\n"
+                    f"- Regular expression support for precise pattern matching\n"
+                    f"- Line number fallback for simple cases\n"
+                    f"- Support for block operations (delete/replace/insert)\n"
+                    f"- UTF-8 encoding for international text support\n"
                          f"- Pattern-based line identification\n"
                          f"- Expected content verification\n"
                          f"- Line number fallback"
