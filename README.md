@@ -1,6 +1,8 @@
 # MCP Simple TextEdit
 
-*An MCP server providing AI-optimized text editing capabilities.*
+An MCP server providing AI-optimized text editing capabilities.
+
+*This is an experimental server, backup files you intend AI to edit using it. Only appending function can be considered reliable*
 
 ## Why Pattern-Based Editing?
 
